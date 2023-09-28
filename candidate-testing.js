@@ -1,5 +1,4 @@
 const input = require('readline-sync');
-let info = input.question("What is your name?");
 
 // TODO 2: modify your quiz app to ask 5 questions //
 
@@ -28,23 +27,33 @@ let correctAnswers = [
   "Trajectory",
   "3"
 ];
-let candidateAnswers = ("");
+let candidateAnswers = [];
 
 
 function askForName() {
   // TODO 1.1b: Ask for candidate's name //
-input.candidateName("Please enter your name: ");
-
+candidateName = input.question("Please enter your name: ");
 }
 
 function askQuestion() {
   // TODO 1.2b: Ask candidate the question and assign the response as candidateAnswer //
-for(let i = 0; i < questions.length; i++) {
-  console.log(questions[i]);
+for (let i = 0; i < questions.length; i++) {
+  candidateAnswers.push(input.question(questions[i]));
 }
 }
 
 function gradeQuiz(candidateAnswers) {
+  let numCorrect = 0;
+
+  for (let i = 0; i < questions.length; i++) {
+    console.log(`Question ${i + 1}: ${questions[i]}`);
+    console.log(`Your Answer: ${candidateAnswers[i]}`);
+    console.log(`Correct Answer: ${correctAnswers[i]}\n`);
+
+    if (candidateAnswers[i].toLowerCase() === correctAnswers[i].toLowerCase()) {
+      numCorrect++; 
+    }
+  }
 
   // TODO 1.2c: Let the candidate know if they have answered the question correctly or incorrectly // 
 if (candidateAnswer === correctAnswer) {
@@ -54,15 +63,22 @@ if (candidateAnswer === correctAnswer) {
 }
 
 
-  let grade;  //TODO 3.2 use this variable to calculate the candidates score.
+  let grade = (numCorrect / questions.length) * 100;
+   //TODO 3.2 use this variable to calculate the candidates score.
+   console.log(`Candidate Name: ${candidateName}`);
+   console.log(`>>> Final Grade: ${grade.toFixed(2)}% (${numCorrect} of ${questions.length} correct) <<<`);
 
-
+   if (grade >= 80) {
+    console.log(">>> Status: PASSED <<<");
+  } else {
+    console.log(">>> Status: FAILED <<<");
+  }
   return grade;
 }
 
 function runProgram() {
   askForName();
-  // TODO 1.1c: Greet candidate                                    e using their name //
+  // TODO 1.1c: Greet candidate using their name //
    console.log("Hello, " + candidateName);
   askQuestion();
   gradeQuiz(this.candidateAnswers);
